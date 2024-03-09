@@ -40,8 +40,8 @@
       function get_data_from_elements() {
         data.assistant_id = document.getElementById("assistant_id").value;
         data.assistant_name = document.getElementById("assistant_name").value;
-        data.file_id = document.getElementById("file_id").value;
-        data.thread_id = document.getElementById("thread_id").value;
+        //data.file_id = document.getElementById("file_id").value;
+        /data.thread_id = document.getElementById("thread_id").value;
         data.message = document.getElementById("message").value;
         data.run_id = document.getElementById("run_id").value;
         data.status = document.getElementById("run_status").value;
@@ -49,7 +49,7 @@
       function write_data_to_elements(data) {
         document.getElementById("assistant_id").value = data.assistant_id;
         document.getElementById("assistant_name").value = data.assistant_name;
-        document.getElementById("file_id").value = data.file_id;
+        //document.getElementById("file_id").value = data.file_id;
         document.getElementById("thread_id").value = data.thread_id;
         document.getElementById("message").value = data.message;
         document.getElementById("run_id").value = data.run_id;
@@ -161,16 +161,9 @@
         <button
           class="btn btn-primary mr-1"
           type="submit"
-          onclick="sendRequest('create_assistant')"
-        >
-          Create
-        </button>
-        <button
-          class="btn btn-primary mr-1"
-          type="submit"
           onclick="sendRequest('get_assistant')"
         >
-          Get Assistant by Name
+          Get or Create Assistant
         </button>
         <input type="text" id="assistant_name" name="assistant_name" />
         <button
@@ -180,45 +173,8 @@
         >
           List
         </button>
-        <button
-          class="btn btn-primary mr-1"
-          type="submit"
-          onclick="sendRequest('delete_assistant')"
-        >
-          Delete
-        </button>
-        <input type="text" id="assistant_id" name="assistant_id" />
 
-        <label for="file_id" class="label-container">File Load:</label>
-        <button
-          class="btn btn-primary mr-1"
-          type="submit"
-          onclick="sendRequest('upload_file')"
-        >
-          Upload
-        </button>
-        <button
-          class="btn btn-primary mr-1"
-          type="submit"
-          onclick="sendRequest('create_file')"
-        >
-          Attach
-        </button>
-        <button
-          class="btn btn-primary mr-1"
-          type="submit"
-          onclick="sendRequest('list_files')"
-        >
-          List
-        </button>
-        <button
-          class="btn btn-primary mr-1"
-          type="submit"
-          onclick="sendRequest('delete_file')"
-        >
-          Delete
-        </button>
-        <input type="text" id="file_id" name="file_id" />
+        <input type="text" id="assistant_id" name="assistant_id" />
 
         <label for="thread_id" class="label-container">Thread ID:</label>
         <button
@@ -245,13 +201,7 @@
         >
           Create
         </button>
-        <button
-          class="btn btn-primary mr-1"
-          type="submit"
-          onclick="sendRequest('delete_run')"
-        >
-          Cancel Run
-        </button>
+
         <button
           class="btn btn-primary mr-1"
           type="submit"
@@ -278,15 +228,6 @@
           Get Messages
         </button>
         <input type="text" id="message" name="message" />
-
-        <label for="func_name" class="label-container">Add Tools:</label>
-        <button
-          class="btn btn-primary mr-1"
-          type="submit"
-          onclick="sendRequest('list_tools')"
-        >
-          Add Tools
-        </button>
 
         <div>
           <label for="response">Response from GPT:</label>
