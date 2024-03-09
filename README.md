@@ -3,6 +3,17 @@
 jrw@mit.edu (email me if you find issues)
 Thanks to following for their tools
 
+This is an initial version that demonstrates the "Thread Context Window" in action.
+User prompts and Assistant answers are added to the Thread Messages. None are deleted
+When we get a new thread we start all over again with only the system prompt repeated.
+
+You can create an Assistant by giving a name. It checks if that name is in use and if so returns the
+assistant_id of that previous version. The assistant is given a basic System Prompt - You are a helpful assistant
+It also creates a new thread to run on. You then create a user: Message and next hit Run to run the thread
+with all messages on it including the new one.
+You then need to check the Status of the Run (completed, in_progress, awaiting_action)
+Finally you can get all messages on the thread.
+
 ## YouTube Video https://youtu.be/1dWdqAAOJeY
 
 ## References developersdigest/OpenAI_Function_Toolkit_And_Library
