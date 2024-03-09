@@ -41,7 +41,7 @@
         data.assistant_id = document.getElementById("assistant_id").value;
         data.assistant_name = document.getElementById("assistant_name").value;
         //data.file_id = document.getElementById("file_id").value;
-        /data.thread_id = document.getElementById("thread_id").value;
+        //data.thread_id = document.getElementById("thread_id").value;
         data.message = document.getElementById("message").value;
         data.run_id = document.getElementById("run_id").value;
         data.status = document.getElementById("run_status").value;
@@ -161,7 +161,7 @@
         <button
           class="btn btn-primary mr-1"
           type="submit"
-          onclick="sendRequest('get_assistant')"
+          onclick="sendRequest('run_assistant')"
         >
           Get or Create Assistant
         </button>
@@ -173,7 +173,6 @@
         >
           List
         </button>
-
         <input type="text" id="assistant_id" name="assistant_id" />
 
         <label for="thread_id" class="label-container">Thread ID:</label>
@@ -182,7 +181,7 @@
           type="submit"
           onclick="sendRequest('create_thread')"
         >
-          Create
+          Create New Thread
         </button>
         <button
           class="btn btn-primary mr-1"

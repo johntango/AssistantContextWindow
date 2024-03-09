@@ -52,6 +52,9 @@ app.get('/', (req, res) => {
 app.post('/run_assistant', async (req, res) => {
     let name = req.body.assistant_name;
     let instructions = req.body.message;
+    if (instructions == "") {
+        instructions = "You are a helpful assistant."
+    }
     if (tools.length < 2) {
         //tools = [{ type: "code_interpreter" }, { type: "retrieval" }]
     }
@@ -62,13 +65,13 @@ app.post('/run_assistant', async (req, res) => {
         apiKey: process.env.OPENAI_API_KEY,
     });
     let assistant = await create_or_get_assistant(name);
-    let thread = await create_or_get_thread()
+    let thread = await create_thread()
 
     focus.assistant_id = assistant.id;
     focus.thread_id = thread.id;
     focus.assistant_name = assistant.name;
     messages = await runAssistant(focus.assistant_id, focus.thread_id, instructions);
-    res.status(200).json({ message: messages, focus: focus });
+    res.status(200).json({ message: JSON.stringify(messages), focus: focus });
 });
 
 async function create_or_get_assistant(name, instructions) {
@@ -99,11 +102,11 @@ async function create_or_get_assistant(name, instructions) {
     }
     return assistant;
 }
-async function create_or_get_thread() {
-    let response = {}
-    if (focus.thread_id == "") {
+// create a new thread
+
+async function create_thread() {
         // do we need an intitial system message on the thread?
-        response = await openai.beta.threads.create(
+    let response = await openai.beta.threads.create(
             /*messages=[
             {
               "role": "user",
@@ -112,10 +115,10 @@ async function create_or_get_thread() {
             }
           ]*/
         )
-        focus.thread_id = response.id;
-    }
+    focus.thread_id = response.id;
     return response;
 }
+   
 // create a new assistant
 app.post('/create_assistant', async (req, res) => {
     // we should define the system message for the assistant in the input
@@ -196,7 +199,30 @@ app.post('/delete_assistant', async (req, res) => {
         return console.error('Error:', error);
     }
 });
+// Create a new thread
+app.post('/create_thread', async (req, res) => {
+    let assistant_id = req.body.assistant_id;
+    try {
+        let response = await openai.beta.threads.create(
+            /*messages=[
+            {
+              "role": "user",
+              "content": "Create data visualization based on the trends in this file.",
+              "file_ids": [focus.file_id]
+            }
+          ]*/
+        )
 
+        let message = response;
+        console.log("create_thread response: " + JSON.stringify(response));
+        focus.thread_id = response.id;
+        res.status(200).json({ message: message, focus: focus });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Thread Create failed' });
+    }
+});
 app.post('/create_run', async (req, res) => {
     let thread_id = req.body.thread_id;
     let assistant_id = req.body.assistant_id;
@@ -308,7 +334,7 @@ async function runAssistant(assistant_id, thread_id, user_instructions) {
         let run = await openai.beta.threads.runs.create(thread_id, {
             assistant_id: assistant_id
         })
-        run_id = run.id;
+        let run_id = run.id;
         focus.run_id = run_id;
         focus.assistant_id = assistant_id;
         focus.thread_id = thread_id;
@@ -342,7 +368,7 @@ async function get_run_status(thread_id, run_id) {
 
         }
         // await openai.beta.threads.del(thread_id)
-        return
+        return 
     }
     catch (error) {
         console.log(error);
